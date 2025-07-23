@@ -1,12 +1,12 @@
 "use client";
 import React, { useContext, useReducer, createContext } from "react";
-type Person = {
+export type Person = {
   name: string;
   age: number;
   email: string;
 };
 
-type Action ={ type: "save"; payLoad: Person }| { type: "del"; payLoad: number };
+type Action ={ type: "save"; payLoad: Person } | { type: "del"; payLoad: number } | {type:"update"; payLoad:{ data: Person; index: number }} | {type:"cancle"};
 
 const ins: Person[] = [];
 const reducer=(state: Person[], action: Action)=>{
@@ -16,6 +16,13 @@ const reducer=(state: Person[], action: Action)=>{
               const newState=state.filter((obj, ind)=>{if(action.payLoad!==ind) return obj})
               return  newState
       }
+      case "update" : {
+         const newState = [...state];
+         newState[action.payLoad.index] = action.payLoad.data;
+         return newState;
+      }
+     case "cancle" : return state;
+      
       default: return state; 
    }
 }
